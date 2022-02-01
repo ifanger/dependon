@@ -5,11 +5,9 @@ import 'repository/user_repository.dart';
 import 'repository/user_repository_impl.dart';
 
 void main() async {
-  singleton(() => UserProvider());
+  factory(() => UserProvider());
   singleton<UserRepository>(() => UserRepositoryImpl(get()));
 
   final UserRepository userRepository = get();
-  final user = await userRepository.getUser();
-
-  print(user.name);
+  await userRepository.getUser();
 }
