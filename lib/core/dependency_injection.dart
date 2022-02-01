@@ -1,8 +1,8 @@
-import 'package:collection/collection.dart';
 import 'package:dependon/core/error/dependency_error.dart';
 import 'package:dependon/core/model/creation.dart';
 import 'package:dependon/core/model/factory.dart';
 import 'package:dependon/core/model/singleton.dart';
+import 'package:dependon/core/utils/collection.dart';
 
 class DependencyInjection {
   final Set<Creation<dynamic>> _instances = {};
