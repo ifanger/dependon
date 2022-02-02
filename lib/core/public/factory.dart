@@ -9,8 +9,8 @@ import 'package:dependon/core/dependency_injection.dart';
 ///
 /// Example:
 /// ```
-/// factory(() => UserService());
+/// factori(() => UserService());
 /// ```
-void factory<T>(T Function() initialization) {
+void factori<T>(T Function() initialization) {
   DependencyInjection.instance.factory(initialization);
 }

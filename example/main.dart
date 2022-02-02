@@ -1,13 +1,11 @@
-import 'package:dependon/dependon.dart';
+import 'package:flutter/material.dart';
 
-import 'provider/user_provider.dart';
-import 'repository/user_repository.dart';
-import 'repository/user_repository_impl.dart';
+import 'di/dependency_injection_module.dart';
+import 'infrastructure/app.dart';
 
 void main() async {
-  factory(() => UserProvider());
-  singleton<UserRepository>(() => UserRepositoryImpl(get()));
+  final diModule = DependencyInjectionModule();
+  diModule.load();
 
-  final UserRepository userRepository = get();
-  await userRepository.getUser();
+  runApp(myApp);
 }

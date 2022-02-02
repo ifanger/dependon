@@ -1,32 +1,34 @@
 import 'package:dependon/core/error/dependency_error.dart';
-import 'package:dependon/core/model/creation.dart';
+import 'package:dependon/core/model/definition.dart';
 import 'package:dependon/core/model/factory.dart';
 import 'package:dependon/core/model/singleton.dart';
 import 'package:dependon/core/utils/collection.dart';
 
+/// Main dependency injection class.
 class DependencyInjection {
-  final Set<Creation<dynamic>> _instances = {};
+  final Set<Definition<dynamic>> _instances = {};
 
   static DependencyInjection? _instance;
 
+  /// Returns the current instance of [DependencyInjection].
   static DependencyInjection get instance {
     _instance ??= DependencyInjection();
     return _instance!;
   }
 
-  void createInstance<T>(Object clazz) {
-    _declareComponent(Singleton<T>(object: clazz));
-  }
-
+  /// Creates a lazy instance of a singleton that will execute the provided
+  /// initialization.
   void singleton<T>(T Function() initialization) {
     _declareComponent(Singleton<T>(initialization: initialization));
   }
 
+  /// Creates a lazy instance of a factory that will execute the provided
+  /// initialization.
   void factory<T>(T Function() initialization) {
     _declareComponent(Factory<T>(initialization));
   }
 
-  void _declareComponent<T>(Creation<T> creation) {
+  void _declareComponent<T>(Definition<T> creation) {
     final component =
         _instances.firstWhereOrNull((element) => element.type == T);
 
@@ -37,8 +39,9 @@ class DependencyInjection {
     }
   }
 
+  /// Retrieves the object depending on the declared.
   T get<T>() {
-    final Creation<dynamic>? singleton =
+    final Definition<dynamic>? singleton =
         _instances.firstWhereOrNull((e) => e.type == T);
 
     if (singleton != null) {

@@ -1,6 +1,6 @@
 name: dependon
-description: Dependency injection management.
-version: 0.0.2
+description: A simple and fast dependency management package.
+version: 0.0.3
 homepage: https://github.com/ifanger/dependon
 
 environment:
