@@ -1,8 +1,8 @@
 import '../../repository/user/model/user.dart';
 import '../../repository/user/user_repository.dart';
 
-class GetUserUseCase {
-  GetUserUseCase(this._userRepository);
+class GetUsersUseCase {
+  GetUsersUseCase(this._userRepository);
 
   final UserRepository _userRepository;
 

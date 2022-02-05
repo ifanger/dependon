@@ -1,3 +1,13 @@
+## 0.0.4
+
+- Removed global `factory` and `singleton` methods. Now your declarations must be inside a `Module`.
+- Multiple modules are now supported.
+- Added logging feature.
+- Added `property` declaration.
+- Performance improved.
+- Updated documentation.
+- Updated `examples/` folder.
+
 ## 0.0.3
 
 - Removed createInstance method.

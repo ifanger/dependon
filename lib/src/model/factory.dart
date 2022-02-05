@@ -1,5 +1,6 @@
-import 'package:dependon/core/model/definition.dart';
-import 'package:dependon/core/utils/initialization.dart';
+import 'package:dependon/src/log/log.dart';
+import 'package:dependon/src/model/definition.dart';
+import 'package:dependon/src/utils/initialization.dart';
 
 /// A factory definition is an object that will be created every time `get` is
 /// called.
@@ -12,6 +13,7 @@ class Factory<T> extends Definition<T> {
   /// Retrieves a new instance of [T].
   @override
   T get instance {
+    logIfAvailable('$T created');
     return initialization.call();
   }
 

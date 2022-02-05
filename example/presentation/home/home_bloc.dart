@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import '../../domain/user/get_user_use_case.dart';
+import '../../domain/user/get_users_use_case.dart';
 import '../../repository/user/model/user.dart';
 
 class HomeBloc {
@@ -8,7 +8,7 @@ class HomeBloc {
     init();
   }
 
-  final GetUserUseCase _getUserUseCase;
+  final GetUsersUseCase _getUserUseCase;
 
   final StreamController<List<User>?> _userController = StreamController();
 

@@ -1,5 +1,4 @@
 library dependon;
 
-export 'core/public/factory.dart' show factori;
-export 'core/public/get.dart' show get;
-export 'core/public/singleton.dart' show singleton;
+export 'src/dependency_injection.dart' show DependencyInjection, get;
+export 'src/module/module.dart' show Module;
