@@ -13,11 +13,6 @@ Simple, light-weight and extremely legible package for dependency injection mana
 ```dart
 import 'package:dependon/dependon.dart';
 
-import 'controller/user_controller.dart';
-import 'data/repository/user_repository.dart';
-import 'data/repository/user_repository_impl.dart';
-import 'usecase/user_use_case.dart';
-
 void main() {
   final Dependon di = Dependon.instance;
   di.registerLazySingleton<UserRepository>(() => UserRepositoryImpl());

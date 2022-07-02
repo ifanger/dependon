@@ -1,3 +1,10 @@
+## 0.0.6
+
+- Refactored all the Dependon library;
+- Removed module's support;
+- Removed property registration (use singleton instead);
+- Simplified library
+
 ## 0.0.4
 
 - Removed global `factory` and `singleton` methods. Now your declarations must be inside a `Module`.
