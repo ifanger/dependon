@@ -1,3 +1,12 @@
+## 0.0.7
+- Renamed `registerSingleton` to `singleton`
+- Renamed `registerFactory` to `factory`
+- Added logging support (`enableLogging`)
+
+(internal)
+- New folders structure
+- We still testing this lib in production apps in order to release an stable version
+
 ## 0.0.6
 
 - Refactored all the Dependon library;

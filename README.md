@@ -15,9 +15,11 @@ import 'package:dependon/dependon.dart';
 
 void main() {
   final Dependon di = Dependon.instance;
-  di.registerLazySingleton<UserRepository>(() => UserRepositoryImpl());
-  di.registerFactory(() => UserUseCase(get()));
-  di.registerSingleton(UserService(get()));
+  di.enableLogging(true);
+
+  di.singleton<UserRepository>(() => UserRepositoryImpl());
+  di.factory(() => UserUseCase(get()));
+  di.singleton(() => UserService(get()), lazy: false);
 
   runApp(myApp());
 }
@@ -37,5 +39,4 @@ final userRepository = get<UserRepository>();
 
 ## Additional information
 
-This is an **alpha release** and this package is still in development. **Not recommended** for **
-production**.
+This is an **alpha release** and this package is still in development. **Not recommended** for **production**.

@@ -7,11 +7,13 @@ import 'usecase/user_use_case.dart';
 
 void main() {
   final Dependon di = Dependon.instance;
-  di.registerFactory(() => UserUseCase(get()));
-  di.registerLazySingleton<UserRepository>(() => UserRepositoryImpl());
+  di.enableLogging(true);
 
-  // singletons should always be the last to be declared
-  di.registerSingleton(UserController(get()));
+  di.factory(() => UserUseCase(get()));
+  di.singleton<UserRepository>(() => UserRepositoryImpl());
+
+  // non-lazy singletons should always be the last to be declared
+  di.singleton(() => UserController(get()), lazy: false);
 
   final UserController controller = get();
   controller.showUsers();

@@ -1,13 +1,35 @@
 library dependon;
 
-part 'dependon_impl.dart';
+import 'package:dependon/src/errors/dependency_injection_error.dart';
+import 'package:dependon/src/logger/dependon_logger.dart';
+import 'package:dependon/src/models/factory/injectable_factory.dart';
+import 'package:dependon/src/models/injectable.dart';
+import 'package:dependon/src/models/singleton/injectable_singleton.dart';
 
+part 'src/dependon_impl.dart';
+
+/// Shortcut for `Dependon.instance.get()`
+///
+/// Returns the requested object by type.
+///
+/// Usage:
+/// ```dart
+/// final UserRepository _userRepository = get<UserRepository>();
+/// ```
 T get<T extends Object>() => Dependon._instance.get<T>();
 
+/// Dependency injection management.
+///
+/// ```dart
+/// final Dependon di = Dependon.instance;
+/// di.singleton<UserRepository>(() => UserRepositoryImpl(get()));
+/// ```
 abstract class Dependon {
   Dependon._();
 
-  static final Dependon _instance = _DependonImpl();
+  static final Dependon _instance = _DependonImpl._();
+
+  static final DependonLogger _logger = DependonLogger();
 
   /// Retrieves the existing instance of `DependencyInjection`.
   static Dependon get instance => _instance;
@@ -16,39 +38,33 @@ abstract class Dependon {
   ///
   /// Usage:
   /// ```dart
+  /// final Dependon di = Dependon.instance;
+  /// final UserRepository _userRepository = di.get<UserRepository>();
+  /// // or
   /// final UserRepository _userRepository = get<UserRepository>();
   /// ```
   T get<T extends Object>();
 
   /// Registers a new creation's instruction for a `factory`.
   ///
-  /// Usage:
+  /// **Usage:**
   /// ```dart
-  /// registerFactory<CounterBloc>(() => CounterBloc(get()));
+  /// factory<CounterBloc>(() => CounterBloc(get()));
   /// ```
-  void registerFactory<T extends Object>(T Function() builder);
+  void factory<T extends Object>(T Function() builder);
 
-  /// Registers the object provided by `instance` into the dependencies tree.
-  /// Note that singletons that are not lazy-initialized should always respect
-  /// the register order. You should never call `get()` inside `registerSingleton`
-  /// before the parameter's registration.
+  /// Creates a new `singleton` registration.
+  /// Be careful: when declaring non-lazy singletons your
+  /// dependencies *MUST* has been declared *BEFORE* the current one.
   ///
-  /// Usage:
+  /// **Usage:**
   /// ```dart
-  /// // before the singleton registration
-  /// registerLazySingleton<AuthenticationRepository>(() => AuthenticationRepositoryImpl(get()));
-  ///
-  /// // after all dependencies registration
-  /// registerSingleton<AuthenticationListener>(AuthenticationListener(get<AuthenticationRepository>()));
+  /// singleton(() => HttpProvider());
+  /// singleton<UserRepository>(() => UserRepositoryImpl(get()));
+  /// singleton(() => AuthenticationListener(get()), lazy: false);
   /// ```
-  void registerSingleton<T extends Object>(T instance);
+  void singleton<T extends Object>(T Function() builder, {bool lazy = true});
 
-  /// Registers a new creation's instruction for a `singleton`.
-  /// The instance of this singleton will only be created when requested.
-  ///
-  /// Usage:
-  /// ```dart
-  /// registerLazySingleton<UserRepository>(() => UserRepositoryImpl(get()));
-  /// ```
-  void registerLazySingleton<T extends Object>(T Function() builder);
+  /// Dependency injection logs.
+  void enableLogging([bool enabled = false]);
 }
