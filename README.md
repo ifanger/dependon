@@ -36,7 +36,3 @@ final UserRepository userRepository = get();
 // or
 final userRepository = get<UserRepository>();
 ```
-
-## Additional information
-
-This is an **alpha release** and this package is still in development. **Not recommended** for **production**.

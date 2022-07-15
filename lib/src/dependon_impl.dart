@@ -51,6 +51,21 @@ class _DependonImpl extends Dependon {
   }
 
   @override
+  void remove<T extends Object>() {
+    final String name = T.toString();
+
+    dependencies.removeWhere((key, value) => key == name);
+
+    diLog('$name removed from dependencies');
+  }
+
+  @override
+  void clear() {
+    dependencies.clear();
+    diLog('Dependencies cleared');
+  }
+
+  @override
   void enableLogging([bool enabled = false]) {
     Dependon._logger.enabled = enabled;
 

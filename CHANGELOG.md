@@ -1,3 +1,8 @@
+## 1.0.0
+- Added `remove` method that allows to unregister dependencies
+- Added `clear` method for removing all dependencies
+- Changed `DependencyInjectionError` in order to throw with a detailed message of the error
+
 ## 0.0.7
 - Renamed `registerSingleton` to `singleton`
 - Renamed `registerFactory` to `factory`

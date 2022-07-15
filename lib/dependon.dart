@@ -65,6 +65,17 @@ abstract class Dependon {
   /// ```
   void singleton<T extends Object>(T Function() builder, {bool lazy = true});
 
+  /// Removes the registration of the provided type.
+  ///
+  /// **Usage:**
+  /// ```dart
+  /// remove<DataStorage>();
+  /// ```
+  void remove<T extends Object>();
+
+  /// Removes all the registrations in the dependency injection map.
+  void clear();
+
   /// Dependency injection logs.
   void enableLogging([bool enabled = false]);
 }
