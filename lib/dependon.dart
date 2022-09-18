@@ -2,6 +2,7 @@ library dependon;
 
 import 'package:dependon/src/errors/dependency_injection_error.dart';
 import 'package:dependon/src/logger/dependon_logger.dart';
+import 'package:dependon/src/models/controller/injectable_controller.dart';
 import 'package:dependon/src/models/factory/injectable_factory.dart';
 import 'package:dependon/src/models/injectable.dart';
 import 'package:dependon/src/models/singleton/injectable_singleton.dart';
@@ -68,6 +69,25 @@ abstract class Dependon {
     final String? tag,
     final bool lazy = true,
   });
+
+  /// Creates a `controller` instance which represents a singleton that is
+  /// lazy initialized and can be unset.
+  ///
+  /// This instance is useful for share the same instance with multiple listeners.
+  ///
+  /// **Usage:**
+  /// ```dart
+  /// controller<UserCreateBloc>(() => UserCreateBloc(get()));
+  /// ```
+  void controller<T extends Object>(T Function() builder, {final String? tag});
+
+  /// Deletes the current existing instance of the provided object but keeps the
+  /// creation instruction.
+  ///
+  /// If no instances were created nothing will happen.
+  ///
+  /// **Note:** this method works only with `controller`.
+  void unset<T extends Object>({final String? tag});
 
   /// Removes the registration of the provided type.
   ///

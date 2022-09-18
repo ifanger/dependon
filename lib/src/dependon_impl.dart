@@ -8,6 +8,31 @@ class _DependonImpl extends Dependon {
   final Map<String, Injectable<Object>> dependencies = {};
 
   @override
+  T get<T extends Object>({final String? tag}) {
+    String name = T.toString();
+
+    if (tag?.isNotEmpty == true) {
+      name += '_$tag';
+    }
+
+    if (!dependencies.containsKey(name)) {
+      throw DependencyInjectionError('No implementation found for $name.');
+    }
+
+    final Injectable<T> injectable = dependencies[name]! as Injectable<T>;
+
+    if (injectable is InjectableFactory<T>) {
+      return injectable.create();
+    } else if (injectable is InjectableSingleton<T>) {
+      return injectable.retrieve();
+    } else if (injectable is InjectableController<T>) {
+      return injectable.retrieve();
+    }
+
+    throw DependencyInjectionError('Invalid injectable type of $name.');
+  }
+
+  @override
   void factory<T extends Object>(T Function() builder) {
     _register(InjectableFactory<T>(builder));
   }
@@ -26,42 +51,26 @@ class _DependonImpl extends Dependon {
   }
 
   @override
-  T get<T extends Object>({final String? tag}) {
+  void controller<T extends Object>(T Function() builder, {final String? tag}) {
+    _register(InjectableController<T>(builder, tag: tag));
+  }
+
+  @override
+  void unset<T extends Object>({final String? tag}) {
     String name = T.toString();
 
     if (tag?.isNotEmpty == true) {
       name += '_$tag';
     }
 
-    if (!dependencies.containsKey(name)) {
-      throw DependencyInjectionError('No implementation found for $name.');
+    try {
+      final InjectableController<T>? controller =
+          dependencies[name] as InjectableController<T>?;
+      controller?.unset();
+    } catch (e) {
+      throw DependencyInjectionError(
+          '$name is not created or not a controller.');
     }
-
-    final Injectable<T> injectable = dependencies[name]! as Injectable<T>;
-
-    if (injectable is InjectableFactory<T>) {
-      return injectable.create();
-    } else if (injectable is InjectableSingleton<T>) {
-      return injectable.retrieve();
-    }
-
-    throw DependencyInjectionError('Invalid injectable type of $name.');
-  }
-
-  void _register<T extends Object>(Injectable<T> injectable) {
-    String name = T.toString();
-
-    if (injectable is InjectableSingleton<T> &&
-        injectable.tag?.isNotEmpty == true) {
-      name += '_${injectable.tag}';
-    }
-
-    if (dependencies.containsKey(name)) {
-      throw DependencyInjectionError('Dependency $name is already registered.');
-    }
-
-    dependencies[name] = injectable;
-    diLog('$name registered');
   }
 
   @override
@@ -90,5 +99,24 @@ class _DependonImpl extends Dependon {
     if (enabled) {
       diLog('Logs enabled');
     }
+  }
+
+  void _register<T extends Object>(Injectable<T> injectable) {
+    String name = T.toString();
+
+    if (injectable is InjectableSingleton<T> &&
+        injectable.tag?.isNotEmpty == true) {
+      name += '_${injectable.tag}';
+    } else if (injectable is InjectableController<T> &&
+        injectable.tag?.isNotEmpty == true) {
+      name += '_${injectable.tag}';
+    }
+
+    if (dependencies.containsKey(name)) {
+      throw DependencyInjectionError('Dependency $name is already registered.');
+    }
+
+    dependencies[name] = injectable;
+    diLog('$name registered');
   }
 }

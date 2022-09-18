@@ -1,3 +1,6 @@
+## 1.2.0
+- Created `controller` instance
+
 ## 1.1.0
 - Added `tag` to singleton
 
