@@ -15,14 +15,23 @@ class _DependonImpl extends Dependon {
   @override
   void singleton<T extends Object>(
     T Function() builder, {
-    bool lazy = true,
+    final String? tag,
+    final bool lazy = true,
   }) {
-    _register(InjectableSingleton<T>(builder, lazy: lazy));
+    _register(InjectableSingleton<T>(
+      builder,
+      lazy: lazy,
+      tag: tag,
+    ));
   }
 
   @override
-  T get<T extends Object>() {
-    final String name = T.toString();
+  T get<T extends Object>({final String? tag}) {
+    String name = T.toString();
+
+    if (tag?.isNotEmpty == true) {
+      name += '_$tag';
+    }
 
     if (!dependencies.containsKey(name)) {
       throw DependencyInjectionError('No implementation found for $name.');
@@ -40,7 +49,12 @@ class _DependonImpl extends Dependon {
   }
 
   void _register<T extends Object>(Injectable<T> injectable) {
-    final String name = T.toString();
+    String name = T.toString();
+
+    if (injectable is InjectableSingleton<T> &&
+        injectable.tag?.isNotEmpty == true) {
+      name += '_${injectable.tag}';
+    }
 
     if (dependencies.containsKey(name)) {
       throw DependencyInjectionError('Dependency $name is already registered.');
@@ -51,8 +65,12 @@ class _DependonImpl extends Dependon {
   }
 
   @override
-  void remove<T extends Object>() {
-    final String name = T.toString();
+  void remove<T extends Object>({final String? tag}) {
+    String name = T.toString();
+
+    if (tag?.isNotEmpty == true) {
+      name += '_$tag';
+    }
 
     dependencies.removeWhere((key, value) => key == name);
 

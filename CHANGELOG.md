@@ -1,3 +1,6 @@
+## 1.1.0
+- Added `tag` to singleton
+
 ## 1.0.0
 - Added `remove` method that allows to unregister dependencies
 - Added `clear` method for removing all dependencies

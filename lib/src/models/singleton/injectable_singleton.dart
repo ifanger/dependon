@@ -5,6 +5,7 @@ class InjectableSingleton<T extends Object> extends Injectable<T> {
   InjectableSingleton(
     T Function() builder, {
     this.lazy = true,
+    this.tag,
   }) : super(builder) {
     if (!lazy) {
       retrieve();
@@ -12,6 +13,7 @@ class InjectableSingleton<T extends Object> extends Injectable<T> {
   }
 
   final bool lazy;
+  final String? tag;
 
   T? _instance;
 
@@ -22,6 +24,7 @@ class InjectableSingleton<T extends Object> extends Injectable<T> {
     }
 
     diLog('Retrieved singleton ${T.toString()}');
+
     return _instance!;
   }
 }

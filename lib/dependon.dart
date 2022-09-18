@@ -43,7 +43,7 @@ abstract class Dependon {
   /// // or
   /// final UserRepository _userRepository = get<UserRepository>();
   /// ```
-  T get<T extends Object>();
+  T get<T extends Object>({final String? tag});
 
   /// Registers a new creation's instruction for a `factory`.
   ///
@@ -63,7 +63,11 @@ abstract class Dependon {
   /// singleton<UserRepository>(() => UserRepositoryImpl(get()));
   /// singleton(() => AuthenticationListener(get()), lazy: false);
   /// ```
-  void singleton<T extends Object>(T Function() builder, {bool lazy = true});
+  void singleton<T extends Object>(
+    T Function() builder, {
+    final String? tag,
+    final bool lazy = true,
+  });
 
   /// Removes the registration of the provided type.
   ///
@@ -71,7 +75,7 @@ abstract class Dependon {
   /// ```dart
   /// remove<DataStorage>();
   /// ```
-  void remove<T extends Object>();
+  void remove<T extends Object>({final String? tag});
 
   /// Removes all the registrations in the dependency injection map.
   void clear();
